@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 002-create-payment-transaction
+      id: 003-create-refund
       author: Vovka
       changes:
         - createTable:
-            tableName: payment_transaction
+            tableName: refund
             columns:
               - column:
                   name: id
@@ -14,13 +14,8 @@ databaseChangeLog:
                     autoIncrement: true
                     nullable: false
               - column:
-                  name: amount
+                  name: refunded_amount
                   type: DECIMAL(19,4)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: currency
-                  type: VARCHAR(3)
                   constraints:
                     nullable: false
               - column:
@@ -29,23 +24,15 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: error_message
+                  name: reason
                   type: TEXT
               - column:
-                  name: source_bank_account_id
+                  name: payment_transaction_id
                   type: BIGINT
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_payment_source_account
-                    referencedTableName: bank_account
-                    referencedColumnNames: id
-              - column:
-                  name: destination_bank_account_id
-                  type: BIGINT
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_payment_destination_account
-                    referencedTableName: bank_account
+                    foreignKeyName: fk_refund_payment_transaction
+                    referencedTableName: payment_transaction
                     referencedColumnNames: id
               - column:
                   name: created_at
