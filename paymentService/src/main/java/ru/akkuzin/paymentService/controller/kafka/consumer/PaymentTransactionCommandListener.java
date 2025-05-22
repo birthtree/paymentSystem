@@ -20,6 +20,12 @@ public class PaymentTransactionCommandListener {
     public void consumePaymentTransactionCommand(ConsumerRecord<String, String> record) {
         var command = PaymentTransactionCommand.valueOf(record.value());
 
+        var commandHandler = commandHandlers.get(command);
+        if (commandHandler == null) {
+            throw new IllegalArgumentException("Unknown command, record" + record);
+        }
+        commandHandler.proccess(record.key(), record.value());
+
     }
     private PaymentTransactionCommand getPaymentTransactionCommand(ConsumerRecord<String, String> record) {
         var commandHeader = record.headers().lastHeader("command");
